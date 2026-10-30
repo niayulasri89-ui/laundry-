@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Laundry Bersih Wangi</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef6f9;
+      color: #1d3340;
+      line-height: 1.5;
+    }
+
+    /* FLEXBOX 1: header, judul di kiri, menu di kanan */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      background: #1b4965;
+      color: white;
+      padding: 16px 5%;
+    }
+
+    /* FLEXBOX 2: menu berjajar ke samping */
+    nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      color: #f4a261;
+    }
+
+    /* FLEXBOX 3: seksi tersusun ke bawah */
+    main {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      padding: 24px 5%;
+    }
+
+    /* FLEXBOX 4: form dan pesanan berdampingan, turun ke bawah di HP */
+    .bawah {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .bawah section {
+      flex: 1 1 340px;
+    }
+
+    section {
+      background: white;
+      padding: 20px;
+      border-radius: 6px;
+      border: 1px solid #c9dde6;
+    }
+
+    h2 {
+      margin-bottom: 8px;
+    }
+
+    .ket {
+      color: #52707f;
+      margin-bottom: 12px;
+    }
+
+    /* tabel */
+    .gulir {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 440px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 10px;
+      border-bottom: 1px solid #c9dde6;
+    }
+
+    th {
+      background: #eef6f9;
+    }
+
+    .proses  { color: #c26a14; font-weight: bold; }
+    .selesai { color: #1d7a4d; font-weight: bold; }
+
+    /* FLEXBOX 5: isian form tersusun ke bawah */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-weight: bold;
+    }
+
+    /* FLEXBOX 6: checkbox sejajar dengan tulisannya */
+    label.centang {
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+    }
+
+    input, select {
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #9bb8c6;
+      border-radius: 4px;
+    }
+
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+    }
+
+    #cari {
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    button {
+      background: #2a9d8f;
+      color: white;
+      border: 0;
+      border-radius: 4px;
+      padding: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #217a6f;
+    }
+
+    .aksi {
+      display: flex;
+      gap: 6px;
+    }
+
+    .kecil {
+      padding: 4px 10px;
+      font-size: 0.9rem;
+    }
+
+    .hapus {
+      background: #e4572e;
+    }
+
+    .hapus:hover {
+      background: #c9441f;
+    }
+
+    footer {
+      background: #1b4965;
+      color: #cfe3ee;
+      padding: 20px 5%;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Laundry Bersih Wangi</h1>
+    <nav>
+      <a href="#layanan">Layanan</a>
+      <a href="#pesan">Pesan laundry</a>
+      <a href="#pesanan">Pesanan saya</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- TABLE: daftar layanan -->
+    <section id="layanan">
+      <h2>Daftar layanan dan harga</h2>
+      <p class="ket">Harga contoh untuk tugas.</p>
+
+      <input type="search" id="cari" placeholder="Cari layanan, misalnya setrika">
+
+      <div class="gulir">
+        <table>
+          <thead>
+            <tr>
+              <th>Layanan</th>
+              <th>Harga</th>
+              <th>Satuan</th>
+              <th>Estimasi selesai</th>
+            </tr>
+          </thead>
+          <tbody id="isiLayanan"></tbody>
+        </table>
+      </div>
+      <p id="kosong" hidden>Layanan tidak ditemukan.</p>
+    </section>
+
+    <div class="bawah">
+      <!-- FORM: pesan laundry -->
+      <section id="pesan">
+        <h2>Pesan laundry</h2>
+        <form id="formPesan">
+          <label>Nama pelanggan
+            <input type="text" id="nama" required minlength="3">
+          </label>
+
+          <label>Layanan
+            <select id="pilihLayanan"></select>
+          </label>
+
+          <label>Jumlah (kg atau pcs sesuai layanan)
+            <input type="number" id="jumlah" min="0.1" step="0.1" value="1" required>
+          </label>
+
+          <label class="centang">
+            <input type="checkbox" id="antar">
+            Antar jemput (+ Rp 5.000)
+          </label>
+
+          <p>Total bayar: <strong id="total">Rp 0</strong></p>
+
+          <button type="submit">Simpan pesanan</button>
+        </form>
+      </section>
+
+      <!-- TABLE: pesanan -->
+      <section id="pesanan">
+        <h2>Pesanan saya</h2>
+        <p id="ringkasan">Belum ada pesanan.</p>
+        <div class="gulir">
+          <table>
+            <thead>
+              <tr>
+                <th>Nama</th>
+                <th>Layanan</th>
+                <th>Jumlah</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="isiPesanan"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>Tugas Pemrograman Web. Data hanya contoh.</footer>
+
+  <script>
+    // ===== 1. Data layanan (bisa kamu ubah) =====
+    const layanan = [
+      { nama: "Cuci lipat",         harga: 7000,  satuan: "kg",  estimasi: "2 hari" },
+      { nama: "Cuci Setrika",        harga: 8000,  satuan: "kg",  estimasi: "3 hari" },
+      { nama: "Setrika Saja",        harga: 5000,  satuan: "kg",  estimasi: "2 hari" },
+      { nama: "Cuci Express",        harga: 10000, satuan: "kg",  estimasi: "1 hari" },
+      { nama: "Bedcover  ",          harga: 25000, satuan: "pcs", estimasi: "3 hari" },
+      { nama: "Selimut kecil / seprai", harga: 10000, satuan: "pcs", estimasi: "4 hari" },
+      { nama: "Seprai 1 stel",       harga: 15000, satuan: "pcs", estimasi: "4 hari" },
+      { nama: "Selimut besar",       harga: 20000, satuan: "pcs", estimasi: "4 hari" }
+    ];
+
+    const BIAYA_ANTAR = 5000;
+    let pesanan = [];
+
+    // ===== 2. Ambil elemen HTML =====
+    const isiLayanan   = document.getElementById("isiLayanan");
+    const cari         = document.getElementById("cari");
+    const kosong       = document.getElementById("kosong");
+    const pilihLayanan = document.getElementById("pilihLayanan");
+    const jumlah       = document.getElementById("jumlah");
+    const antar        = document.getElementById("antar");
+    const total        = document.getElementById("total");
+    const formPesan    = document.getElementById("formPesan");
+    const isiPesanan   = document.getElementById("isiPesanan");
+    const ringkasan    = document.getElementById("ringkasan");
+
+    // Fungsi bantu: ubah angka jadi format rupiah
+    function rupiah(angka) {
+      return "Rp " + Math.round(angka).toLocaleString("id-ID");
+    }
+
+    // ===== 3. Tampilkan layanan ke tabel (dengan pencarian) =====
+    function tampilLayanan() {
+      const kata = cari.value.toLowerCase();
+
+      const hasil = layanan.filter(function (l) {
+        return l.nama.toLowerCase().includes(kata);
+      });
+
+      let html = "";
+      hasil.forEach(function (l) {
+        html += `
+          <tr>
+            <td>${l.nama}</td>
+            <td>${rupiah(l.harga)}</td>
+            <td>per ${l.satuan}</td>
+            <td>${l.estimasi}</td>
+          </tr>`;
+      });
+
+      isiLayanan.innerHTML = html;
+      kosong.hidden = hasil.length > 0;
+    }
+
+    cari.addEventListener("input", tampilLayanan);
+
+    // ===== 4. Isi pilihan layanan di form =====
+    layanan.forEach(function (l, i) {
+      pilihLayanan.innerHTML += `<option value="${i}">${l.nama} (${rupiah(l.harga)} per ${l.satuan})</option>`;
+    });
+
+    // ===== 5. Hitung total otomatis =====
+    function hitungTotal() {
+      const l = layanan[pilihLayanan.value];
+      const banyak = Number(jumlah.value) || 0;
+      const biayaAntar = antar.checked ? BIAYA_ANTAR : 0;
+      total.textContent = rupiah(l.harga * banyak + biayaAntar);
+    }
+
+    pilihLayanan.addEventListener("change", hitungTotal);
+    jumlah.addEventListener("input", hitungTotal);
+    antar.addEventListener("change", hitungTotal);
+
+    // ===== 6. Tampilkan tabel pesanan =====
+    function tampilPesanan() {
+      let html = "";
+      let jumlahBayar = 0;
+
+      pesanan.forEach(function (p, i) {
+        jumlahBayar += p.total;
+        const kelas = p.status === "Selesai" ? "selesai" : "proses";
+        const teksTombol = p.status === "Selesai" ? "Batal" : "Selesai";
+        html += `
+          <tr>
+            <td>${p.nama}</td>
+            <td>${p.layanan}</td>
+            <td>${p.jumlah} ${p.satuan}</td>
+            <td>${rupiah(p.total)}</td>
+            <td class="${kelas}">${p.status}</td>
+            <td>
+              <div class="aksi">
+                <button class="kecil ubah" data-i="${i}">${teksTombol}</button>
+                <button class="kecil hapus" data-i="${i}">Hapus</button>
+              </div>
+            </td>
+          </tr>`;
+      });
+
+      isiPesanan.innerHTML = html;
+
+      if (pesanan.length === 0) {
+        ringkasan.textContent = "Belum ada pesanan.";
+      } else {
+        ringkasan.textContent = pesanan.length + " pesanan, total " + rupiah(jumlahBayar);
+      }
+    }
+
+    // ===== 7. Saat form dikirim: simpan pesanan =====
+    formPesan.addEventListener("submit", function (e) {
+      e.preventDefault();   // cegah halaman reload
+
+      const l = layanan[pilihLayanan.value];
+      const banyak = Number(jumlah.value);
+      const biayaAntar = antar.checked ? BIAYA_ANTAR : 0;
+
+      pesanan.push({
+        nama: document.getElementById("nama").value.replace(/[<>]/g, ""),
+        layanan: l.nama,
+        satuan: l.satuan,
+        jumlah: banyak,
+        total: l.harga * banyak + biayaAntar,
+        status: "Diproses"
+      });
+
+      tampilPesanan();
+      formPesan.reset();
+      hitungTotal();
+    });
+
+    // ===== 8. Tombol ubah status dan hapus =====
+    isiPesanan.addEventListener("click", function (e) {
+      const nomor = Number(e.target.dataset.i);
+
+      if (e.target.classList.contains("ubah")) {
+        pesanan[nomor].status = pesanan[nomor].status === "Selesai" ? "Diproses" : "Selesai";
+        tampilPesanan();
+      }
+
+      if (e.target.classList.contains("hapus")) {
+        pesanan.splice(nomor, 1);
+        tampilPesanan();
+      }
+    });
+
+    // ===== 9. Jalankan saat halaman pertama dibuka =====
+    tampilLayanan();
+    hitungTotal();
+    tampilPesanan();
+  </script>
+</body>
+</html>
