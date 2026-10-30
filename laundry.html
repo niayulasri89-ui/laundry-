@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -19,7 +20,6 @@
       line-height: 1.5;
     }
 
-    /* FLEXBOX 1: header, judul di kiri, menu di kanan */
     header {
       display: flex;
       justify-content: space-between;
@@ -31,9 +31,9 @@
       padding: 16px 5%;
     }
 
-    /* FLEXBOX 2: menu berjajar ke samping */
     nav {
       display: flex;
+      flex-wrap: wrap;
       gap: 20px;
     }
 
@@ -47,7 +47,6 @@
       color: #f4a261;
     }
 
-    /* FLEXBOX 3: seksi tersusun ke bawah */
     main {
       display: flex;
       flex-direction: column;
@@ -55,7 +54,6 @@
       padding: 24px 5%;
     }
 
-    /* FLEXBOX 4: form dan pesanan berdampingan, turun ke bawah di HP */
     .bawah {
       display: flex;
       flex-wrap: wrap;
@@ -65,6 +63,7 @@
 
     .bawah section {
       flex: 1 1 340px;
+      min-width: 0;
     }
 
     section {
@@ -72,6 +71,7 @@
       padding: 20px;
       border-radius: 6px;
       border: 1px solid #c9dde6;
+      min-width: 0;
     }
 
     h2 {
@@ -83,9 +83,9 @@
       margin-bottom: 12px;
     }
 
-    /* tabel */
     .gulir {
       overflow-x: auto;
+      width: 100%;
     }
 
     table {
@@ -98,16 +98,23 @@
       text-align: left;
       padding: 10px;
       border-bottom: 1px solid #c9dde6;
+      white-space: nowrap;
     }
 
     th {
       background: #eef6f9;
     }
 
-    .proses  { color: #c26a14; font-weight: bold; }
-    .selesai { color: #1d7a4d; font-weight: bold; }
+    .proses {
+      color: #c26a14;
+      font-weight: bold;
+    }
 
-    /* FLEXBOX 5: isian form tersusun ke bawah */
+    .selesai {
+      color: #1d7a4d;
+      font-weight: bold;
+    }
+
     form {
       display: flex;
       flex-direction: column;
@@ -121,7 +128,6 @@
       font-weight: bold;
     }
 
-    /* FLEXBOX 6: checkbox sejajar dengan tulisannya */
     label.centang {
       flex-direction: row;
       align-items: center;
@@ -129,20 +135,17 @@
     }
 
     input, select {
+      width: 100%;
       padding: 10px;
       font-size: 1rem;
       border: 1px solid #9bb8c6;
       border-radius: 4px;
+      font-family: inherit;
     }
 
     input[type="checkbox"] {
       width: 18px;
       height: 18px;
-    }
-
-    #cari {
-      width: 100%;
-      margin-bottom: 12px;
     }
 
     button {
@@ -165,8 +168,8 @@
     }
 
     .kecil {
-      padding: 4px 10px;
-      font-size: 0.9rem;
+      padding: 6px 10px;
+      font-size: 0.85rem;
     }
 
     .hapus {
@@ -177,32 +180,95 @@
       background: #c9441f;
     }
 
+    .rekap-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .kartu {
+      background: #eef6f9;
+      border: 1px solid #c9dde6;
+      border-radius: 6px;
+      padding: 18px;
+    }
+
+    .kartu p {
+      color: #52707f;
+      margin-bottom: 8px;
+    }
+
+    .kartu strong {
+      font-size: 1.25rem;
+      color: #1b4965;
+      overflow-wrap: anywhere;
+    }
+
+    .pesan {
+      margin-top: 12px;
+      color: #c9441f;
+      font-size: 0.9rem;
+    }
+
     footer {
       background: #1b4965;
       color: #cfe3ee;
       padding: 20px 5%;
       font-size: 0.9rem;
     }
+
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        gap: 12px;
+      }
+
+      main {
+        padding: 16px 4%;
+      }
+
+      .bawah {
+        flex-direction: column;
+      }
+
+      .bawah section {
+        width: 100%;
+      }
+    }
   </style>
 </head>
+
 <body>
 
   <header>
     <h1>Laundry Bersih Wangi</h1>
+
     <nav>
       <a href="#layanan">Layanan</a>
-      <a href="#pesan">Pesan laundry</a>
-      <a href="#pesanan">Pesanan saya</a>
+      <a href="#pesan">Pesan Laundry</a>
+      <a href="#pesanan">Pesanan Saya</a>
+      <a href="#rekap">Rekap Bulanan</a>
     </nav>
   </header>
 
   <main>
-    <!-- TABLE: daftar layanan -->
+
+    <!-- DAFTAR LAYANAN -->
     <section id="layanan">
-      <h2>Daftar layanan dan harga</h2>
+      <h2>Daftar Layanan dan Harga</h2>
       <p class="ket">Harga contoh untuk tugas.</p>
 
-      <input type="search" id="cari" placeholder="Cari layanan, misalnya setrika">
+      <input
+        type="search"
+        id="cari"
+        placeholder="Cari layanan, misalnya setrika"
+        aria-label="Cari layanan laundry"
+      >
 
       <div class="gulir">
         <table>
@@ -211,52 +277,97 @@
               <th>Layanan</th>
               <th>Harga</th>
               <th>Satuan</th>
-              <th>Estimasi selesai</th>
+              <th>Estimasi Selesai</th>
             </tr>
           </thead>
           <tbody id="isiLayanan"></tbody>
         </table>
       </div>
+
       <p id="kosong" hidden>Layanan tidak ditemukan.</p>
     </section>
 
     <div class="bawah">
-      <!-- FORM: pesan laundry -->
+
+      <!-- FORM PEMESANAN -->
       <section id="pesan">
-        <h2>Pesan laundry</h2>
+        <h2>Pesan Laundry</h2>
+
         <form id="formPesan">
-          <label>Nama pelanggan
-            <input type="text" id="nama" required minlength="3">
+
+          <label for="nama">Nama pelanggan
+            <input
+              type="text"
+              id="nama"
+              required
+              minlength="3"
+              maxlength="100"
+              placeholder="Masukkan nama pelanggan"
+            >
           </label>
 
-          <label>Layanan
-            <select id="pilihLayanan"></select>
+          <label for="tanggalPengantaran">
+            Tanggal pengantaran
+            <input
+              type="date"
+              id="tanggalPengantaran"
+              required
+            >
           </label>
 
-          <label>Jumlah (kg atau pcs sesuai layanan)
-            <input type="number" id="jumlah" min="0.1" step="0.1" value="1" required>
+          <label for="tanggalPengambilan">
+            Tanggal pengambilan
+            <input
+              type="date"
+              id="tanggalPengambilan"
+              required
+            >
           </label>
 
-          <label class="centang">
+          <label for="pilihLayanan">Pilih layanan
+            <select id="pilihLayanan" required></select>
+          </label>
+
+          <label for="jumlah">
+            Jumlah (kg atau pcs sesuai layanan)
+            <input
+              type="number"
+              id="jumlah"
+              min="0.1"
+              max="1000"
+              step="0.1"
+              value="1"
+              required
+            >
+          </label>
+
+          <label class="centang" for="antar">
             <input type="checkbox" id="antar">
             Antar jemput (+ Rp 5.000)
           </label>
 
           <p>Total bayar: <strong id="total">Rp 0</strong></p>
 
-          <button type="submit">Simpan pesanan</button>
+          <button type="submit">Simpan Pesanan</button>
+
+          <p id="pesanValidasi" class="pesan" role="status"></p>
+
         </form>
       </section>
 
-      <!-- TABLE: pesanan -->
+      <!-- DAFTAR PESANAN -->
       <section id="pesanan">
-        <h2>Pesanan saya</h2>
+        <h2>Pesanan Saya</h2>
+
         <p id="ringkasan">Belum ada pesanan.</p>
+
         <div class="gulir">
           <table>
             <thead>
               <tr>
                 <th>Nama</th>
+                <th>Tanggal Pengantaran</th>
+                <th>Tanggal Pengambilan</th>
                 <th>Layanan</th>
                 <th>Jumlah</th>
                 <th>Total</th>
@@ -264,165 +375,554 @@
                 <th>Aksi</th>
               </tr>
             </thead>
+
             <tbody id="isiPesanan"></tbody>
           </table>
         </div>
       </section>
+
     </div>
+
+    <!-- REKAP BULANAN -->
+    <section id="rekap">
+      <h2>Rekap Bulanan Laundry</h2>
+
+      <p class="ket">
+        Pilih bulan berdasarkan tanggal pengantaran untuk melihat
+        jumlah pesanan dan pendapatan.
+      </p>
+
+      <label for="bulanRekap">Pilih bulan</label>
+      <input type="month" id="bulanRekap">
+
+      <div class="rekap-grid">
+
+        <div class="kartu">
+          <p>Total Pesanan</p>
+          <strong id="rekapJumlah">0</strong>
+        </div>
+
+        <div class="kartu">
+          <p>Total Pendapatan Pesanan</p>
+          <strong id="rekapPendapatan">Rp 0</strong>
+        </div>
+
+        <div class="kartu">
+          <p>Pesanan Selesai</p>
+          <strong id="rekapSelesai">0</strong>
+        </div>
+
+        <div class="kartu">
+          <p>Pesanan Diproses</p>
+          <strong id="rekapProses">0</strong>
+        </div>
+
+      </div>
+
+      <p class="ket" style="margin-top: 16px;">
+        Catatan: pendapatan di sini merupakan total nilai pesanan,
+        bukan konfirmasi pembayaran yang sudah diterima.
+      </p>
+    </section>
+
   </main>
 
-  <footer>Tugas Pemrograman Web. Data hanya contoh.</footer>
+  <footer>
+    Tugas Pemrograman Web. Laundry Bersih Wangi.
+  </footer>
 
   <script>
-    // ===== 1. Data layanan (bisa kamu ubah) =====
+    // =========================================
+    // 1. DATA LAYANAN
+    // =========================================
+
     const layanan = [
-      { nama: "Cuci lipat",         harga: 7000,  satuan: "kg",  estimasi: "2 hari" },
-      { nama: "Cuci Setrika",        harga: 8000,  satuan: "kg",  estimasi: "3 hari" },
-      { nama: "Setrika Saja",        harga: 5000,  satuan: "kg",  estimasi: "2 hari" },
-      { nama: "Cuci Express",        harga: 10000, satuan: "kg",  estimasi: "1 hari" },
-      { nama: "Bedcover  ",          harga: 25000, satuan: "pcs", estimasi: "3 hari" },
-      { nama: "Selimut kecil / seprai", harga: 10000, satuan: "pcs", estimasi: "4 hari" },
-      { nama: "Seprai 1 stel",       harga: 15000, satuan: "pcs", estimasi: "4 hari" },
-      { nama: "Selimut besar",       harga: 20000, satuan: "pcs", estimasi: "4 hari" }
+      {
+        nama: "Cuci Lipat",
+        harga: 7000,
+        satuan: "kg",
+        estimasi: "2 hari"
+      },
+      {
+        nama: "Cuci Setrika",
+        harga: 8000,
+        satuan: "kg",
+        estimasi: "3 hari"
+      },
+      {
+        nama: "Setrika Saja",
+        harga: 5000,
+        satuan: "kg",
+        estimasi: "2 hari"
+      },
+      {
+        nama: "Cuci Express",
+        harga: 10000,
+        satuan: "kg",
+        estimasi: "1 hari"
+      },
+      {
+        nama: "Bedcover",
+        harga: 25000,
+        satuan: "pcs",
+        estimasi: "3 hari"
+      },
+      {
+        nama: "Selimut Kecil / Seprai",
+        harga: 10000,
+        satuan: "pcs",
+        estimasi: "4 hari"
+      },
+      {
+        nama: "Seprai 1 Stel",
+        harga: 15000,
+        satuan: "pcs",
+        estimasi: "4 hari"
+      },
+      {
+        nama: "Selimut Besar",
+        harga: 20000,
+        satuan: "pcs",
+        estimasi: "4 hari"
+      }
     ];
 
     const BIAYA_ANTAR = 5000;
-    let pesanan = [];
+    const KUNCI_PENYIMPANAN = "laundryBersihWangiPesanan";
 
-    // ===== 2. Ambil elemen HTML =====
-    const isiLayanan   = document.getElementById("isiLayanan");
-    const cari         = document.getElementById("cari");
-    const kosong       = document.getElementById("kosong");
+    // Memuat data lama dari localStorage.
+    // Jika data belum ada atau tidak valid, gunakan array kosong.
+    function muatPesanan() {
+      try {
+        const data = localStorage.getItem(KUNCI_PENYIMPANAN);
+        const hasil = data ? JSON.parse(data) : [];
+
+        return Array.isArray(hasil) ? hasil : [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    let pesanan = muatPesanan();
+
+    // =========================================
+    // 2. AMBIL ELEMEN HTML
+    // =========================================
+
+    const isiLayanan = document.getElementById("isiLayanan");
+    const cari = document.getElementById("cari");
+    const kosong = document.getElementById("kosong");
+
     const pilihLayanan = document.getElementById("pilihLayanan");
-    const jumlah       = document.getElementById("jumlah");
-    const antar        = document.getElementById("antar");
-    const total        = document.getElementById("total");
-    const formPesan    = document.getElementById("formPesan");
-    const isiPesanan   = document.getElementById("isiPesanan");
-    const ringkasan    = document.getElementById("ringkasan");
+    const jumlah = document.getElementById("jumlah");
+    const antar = document.getElementById("antar");
+    const total = document.getElementById("total");
 
-    // Fungsi bantu: ubah angka jadi format rupiah
+    const formPesan = document.getElementById("formPesan");
+    const isiPesanan = document.getElementById("isiPesanan");
+    const ringkasan = document.getElementById("ringkasan");
+
+    const nama = document.getElementById("nama");
+    const tanggalPengantaran =
+      document.getElementById("tanggalPengantaran");
+    const tanggalPengambilan =
+      document.getElementById("tanggalPengambilan");
+
+    const pesanValidasi = document.getElementById("pesanValidasi");
+
+    const bulanRekap = document.getElementById("bulanRekap");
+    const rekapJumlah = document.getElementById("rekapJumlah");
+    const rekapPendapatan = document.getElementById("rekapPendapatan");
+    const rekapSelesai = document.getElementById("rekapSelesai");
+    const rekapProses = document.getElementById("rekapProses");
+
+    // =========================================
+    // 3. FUNGSI BANTU
+    // =========================================
+
     function rupiah(angka) {
       return "Rp " + Math.round(angka).toLocaleString("id-ID");
     }
 
-    // ===== 3. Tampilkan layanan ke tabel (dengan pencarian) =====
+    function formatTanggal(tanggal) {
+      if (!tanggal) {
+        return "-";
+      }
+
+      const bagian = tanggal.split("-");
+
+      if (bagian.length !== 3) {
+        return tanggal;
+      }
+
+      return bagian[2] + "-" + bagian[1] + "-" + bagian[0];
+    }
+
+    function simpanPesanan() {
+      try {
+        localStorage.setItem(
+          KUNCI_PENYIMPANAN,
+          JSON.stringify(pesanan)
+        );
+
+        return true;
+      } catch (error) {
+        alert(
+          "Data tidak dapat disimpan di browser. " +
+          "Periksa ruang penyimpanan browser Anda."
+        );
+
+        return false;
+      }
+    }
+
+    // Membuat elemen teks agar nama pelanggan ditampilkan
+    // sebagai teks, bukan sebagai kode HTML.
+    function buatSel(teks) {
+      const td = document.createElement("td");
+      td.textContent = teks;
+      return td;
+    }
+
+    // =========================================
+    // 4. TAMPILKAN DAFTAR LAYANAN
+    // =========================================
+
     function tampilLayanan() {
-      const kata = cari.value.toLowerCase();
+      const kata = cari.value.trim().toLowerCase();
 
       const hasil = layanan.filter(function (l) {
         return l.nama.toLowerCase().includes(kata);
       });
 
-      let html = "";
+      isiLayanan.replaceChildren();
+
       hasil.forEach(function (l) {
-        html += `
-          <tr>
-            <td>${l.nama}</td>
-            <td>${rupiah(l.harga)}</td>
-            <td>per ${l.satuan}</td>
-            <td>${l.estimasi}</td>
-          </tr>`;
+        const tr = document.createElement("tr");
+
+        tr.appendChild(buatSel(l.nama));
+        tr.appendChild(buatSel(rupiah(l.harga)));
+        tr.appendChild(buatSel("per " + l.satuan));
+        tr.appendChild(buatSel(l.estimasi));
+
+        isiLayanan.appendChild(tr);
       });
 
-      isiLayanan.innerHTML = html;
       kosong.hidden = hasil.length > 0;
     }
 
     cari.addEventListener("input", tampilLayanan);
 
-    // ===== 4. Isi pilihan layanan di form =====
+    // =========================================
+    // 5. PILIHAN LAYANAN DALAM FORM
+    // =========================================
+
     layanan.forEach(function (l, i) {
-      pilihLayanan.innerHTML += `<option value="${i}">${l.nama} (${rupiah(l.harga)} per ${l.satuan})</option>`;
+      const option = document.createElement("option");
+
+      option.value = i;
+      option.textContent =
+        l.nama + " (" + rupiah(l.harga) + " per " + l.satuan + ")";
+
+      pilihLayanan.appendChild(option);
     });
 
-    // ===== 5. Hitung total otomatis =====
+    // =========================================
+    // 6. HITUNG TOTAL OTOMATIS
+    // =========================================
+
     function hitungTotal() {
-      const l = layanan[pilihLayanan.value];
+      const indeks = Number(pilihLayanan.value);
+      const l = layanan[indeks];
+
+      if (!l) {
+        total.textContent = rupiah(0);
+        return;
+      }
+
       const banyak = Number(jumlah.value) || 0;
       const biayaAntar = antar.checked ? BIAYA_ANTAR : 0;
-      total.textContent = rupiah(l.harga * banyak + biayaAntar);
+
+      total.textContent = rupiah(
+        l.harga * banyak + biayaAntar
+      );
     }
 
     pilihLayanan.addEventListener("change", hitungTotal);
     jumlah.addEventListener("input", hitungTotal);
     antar.addEventListener("change", hitungTotal);
 
-    // ===== 6. Tampilkan tabel pesanan =====
-    function tampilPesanan() {
-      let html = "";
-      let jumlahBayar = 0;
+    // =========================================
+    // 7. TANGGAL PENGANTARAN DAN PENGAMBILAN
+    // =========================================
 
-      pesanan.forEach(function (p, i) {
-        jumlahBayar += p.total;
-        const kelas = p.status === "Selesai" ? "selesai" : "proses";
-        const teksTombol = p.status === "Selesai" ? "Batal" : "Selesai";
-        html += `
-          <tr>
-            <td>${p.nama}</td>
-            <td>${p.layanan}</td>
-            <td>${p.jumlah} ${p.satuan}</td>
-            <td>${rupiah(p.total)}</td>
-            <td class="${kelas}">${p.status}</td>
-            <td>
-              <div class="aksi">
-                <button class="kecil ubah" data-i="${i}">${teksTombol}</button>
-                <button class="kecil hapus" data-i="${i}">Hapus</button>
-              </div>
-            </td>
-          </tr>`;
-      });
-
-      isiPesanan.innerHTML = html;
-
-      if (pesanan.length === 0) {
-        ringkasan.textContent = "Belum ada pesanan.";
-      } else {
-        ringkasan.textContent = pesanan.length + " pesanan, total " + rupiah(jumlahBayar);
-      }
+    function aturTanggalMinimum() {
+      tanggalPengambilan.min = tanggalPengantaran.value;
     }
 
-    // ===== 7. Saat form dikirim: simpan pesanan =====
-    formPesan.addEventListener("submit", function (e) {
-      e.preventDefault();   // cegah halaman reload
+    tanggalPengantaran.addEventListener("change", function () {
+      aturTanggalMinimum();
 
-      const l = layanan[pilihLayanan.value];
+      if (
+        tanggalPengambilan.value &&
+        tanggalPengambilan.value < tanggalPengantaran.value
+      ) {
+        tanggalPengambilan.value = "";
+      }
+    });
+
+    tanggalPengantaran.addEventListener("input", aturTanggalMinimum);
+
+    // =========================================
+    // 8. SIMPAN PESANAN BARU
+    // =========================================
+
+    formPesan.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      pesanValidasi.textContent = "";
+
+      const indeks = Number(pilihLayanan.value);
+      const l = layanan[indeks];
+
+      if (!l) {
+        pesanValidasi.textContent = "Silakan pilih layanan.";
+        return;
+      }
+
+      const namaPelanggan = nama.value.trim();
+      const tglAntar = tanggalPengantaran.value;
+      const tglAmbil = tanggalPengambilan.value;
       const banyak = Number(jumlah.value);
+
+      if (namaPelanggan.length < 3) {
+        pesanValidasi.textContent =
+          "Nama pelanggan minimal 3 karakter.";
+        return;
+      }
+
+      if (!tglAntar || !tglAmbil) {
+        pesanValidasi.textContent =
+          "Tanggal pengantaran dan pengambilan wajib diisi.";
+        return;
+      }
+
+      if (tglAmbil < tglAntar) {
+        pesanValidasi.textContent =
+          "Tanggal pengambilan tidak boleh sebelum tanggal pengantaran.";
+        return;
+      }
+
+      if (!Number.isFinite(banyak) || banyak < 0.1 || banyak > 1000) {
+        pesanValidasi.textContent =
+          "Jumlah harus lebih dari 0 dan maksimal 1000.";
+        return;
+      }
+
       const biayaAntar = antar.checked ? BIAYA_ANTAR : 0;
 
-      pesanan.push({
-        nama: document.getElementById("nama").value.replace(/[<>]/g, ""),
+      const dataBaru = {
+        id: Date.now().toString() + "-" + Math.random().toString(36).slice(2, 8),
+        nama: namaPelanggan,
+        tanggalPengantaran: tglAntar,
+        tanggalPengambilan: tglAmbil,
         layanan: l.nama,
         satuan: l.satuan,
         jumlah: banyak,
         total: l.harga * banyak + biayaAntar,
         status: "Diproses"
-      });
+      };
+
+      pesanan.push(dataBaru);
+
+      if (!simpanPesanan()) {
+        pesanan.pop();
+        return;
+      }
 
       tampilPesanan();
+
       formPesan.reset();
+      aturTanggalMinimum();
       hitungTotal();
+
+      pesanValidasi.style.color = "#1d7a4d";
+      pesanValidasi.textContent = "Pesanan berhasil disimpan.";
     });
 
-    // ===== 8. Tombol ubah status dan hapus =====
+    // =========================================
+    // 9. TAMPILKAN DAFTAR PESANAN
+    // =========================================
+
+    function tampilPesanan() {
+      isiPesanan.replaceChildren();
+
+      let jumlahBayar = 0;
+
+      pesanan.forEach(function (p) {
+        jumlahBayar += Number(p.total) || 0;
+
+        const tr = document.createElement("tr");
+
+        tr.appendChild(buatSel(p.nama));
+        tr.appendChild(buatSel(formatTanggal(p.tanggalPengantaran)));
+        tr.appendChild(buatSel(formatTanggal(p.tanggalPengambilan)));
+        tr.appendChild(buatSel(p.layanan));
+        tr.appendChild(buatSel(p.jumlah + " " + p.satuan));
+        tr.appendChild(buatSel(rupiah(p.total)));
+
+        const tdStatus = buatSel(p.status);
+        tdStatus.className =
+          p.status === "Selesai" ? "selesai" : "proses";
+
+        tr.appendChild(tdStatus);
+
+        const tdAksi = document.createElement("td");
+        const divAksi = document.createElement("div");
+        divAksi.className = "aksi";
+
+        const tombolUbah = document.createElement("button");
+        tombolUbah.type = "button";
+        tombolUbah.className = "kecil ubah";
+        tombolUbah.dataset.id = p.id;
+        tombolUbah.textContent =
+          p.status === "Selesai" ? "Diproses" : "Selesai";
+
+        const tombolHapus = document.createElement("button");
+        tombolHapus.type = "button";
+        tombolHapus.className = "kecil hapus";
+        tombolHapus.dataset.id = p.id;
+        tombolHapus.textContent = "Hapus";
+
+        divAksi.appendChild(tombolUbah);
+        divAksi.appendChild(tombolHapus);
+
+        tdAksi.appendChild(divAksi);
+        tr.appendChild(tdAksi);
+
+        isiPesanan.appendChild(tr);
+      });
+
+      if (pesanan.length === 0) {
+        ringkasan.textContent = "Belum ada pesanan.";
+      } else {
+        ringkasan.textContent =
+          pesanan.length + " pesanan, total " + rupiah(jumlahBayar);
+      }
+
+      tampilRekap();
+    }
+
+    // =========================================
+    // 10. UBAH STATUS DAN HAPUS PESANAN
+    // =========================================
+
     isiPesanan.addEventListener("click", function (e) {
-      const nomor = Number(e.target.dataset.i);
+      const tombol = e.target.closest("button");
 
-      if (e.target.classList.contains("ubah")) {
-        pesanan[nomor].status = pesanan[nomor].status === "Selesai" ? "Diproses" : "Selesai";
+      if (!tombol) {
+        return;
+      }
+
+      const id = tombol.dataset.id;
+
+      const indeks = pesanan.findIndex(function (p) {
+        return p.id === id;
+      });
+
+      if (indeks === -1) {
+        return;
+      }
+
+      if (tombol.classList.contains("ubah")) {
+        const statusLama = pesanan[indeks].status;
+
+        pesanan[indeks].status =
+          statusLama === "Selesai" ? "Diproses" : "Selesai";
+
+        if (!simpanPesanan()) {
+          pesanan[indeks].status = statusLama;
+          return;
+        }
+
         tampilPesanan();
       }
 
-      if (e.target.classList.contains("hapus")) {
-        pesanan.splice(nomor, 1);
+      if (tombol.classList.contains("hapus")) {
+        const konfirmasi = confirm(
+          "Apakah Anda yakin ingin menghapus pesanan ini?"
+        );
+
+        if (!konfirmasi) {
+          return;
+        }
+
+        const dataDihapus = pesanan.splice(indeks, 1)[0];
+
+        if (!simpanPesanan()) {
+          pesanan.splice(indeks, 0, dataDihapus);
+          return;
+        }
+
         tampilPesanan();
       }
     });
 
-    // ===== 9. Jalankan saat halaman pertama dibuka =====
+    // =========================================
+    // 11. REKAP BULANAN
+    // =========================================
+
+    function tampilRekap() {
+      const bulanDipilih = bulanRekap.value;
+
+      const dataBulanan = pesanan.filter(function (p) {
+        return p.tanggalPengantaran &&
+          p.tanggalPengantaran.startsWith(bulanDipilih);
+      });
+
+      let pendapatan = 0;
+      let selesai = 0;
+      let proses = 0;
+
+      dataBulanan.forEach(function (p) {
+        pendapatan += Number(p.total) || 0;
+
+        if (p.status === "Selesai") {
+          selesai++;
+        } else {
+          proses++;
+        }
+      });
+
+      rekapJumlah.textContent = dataBulanan.length;
+      rekapPendapatan.textContent = rupiah(pendapatan);
+      rekapSelesai.textContent = selesai;
+      rekapProses.textContent = proses;
+    }
+
+    // Pilih bulan saat ini secara otomatis.
+    function aturBulanRekap() {
+      const sekarang = new Date();
+
+      const tahun = sekarang.getFullYear();
+      const bulan = String(sekarang.getMonth() + 1).padStart(2, "0");
+
+      bulanRekap.value = tahun + "-" + bulan;
+    }
+
+    bulanRekap.addEventListener("change", tampilRekap);
+
+    // =========================================
+    // 12. JALANKAN SAAT HALAMAN DIBUKA
+    // =========================================
+
+    aturBulanRekap();
+    aturTanggalMinimum();
     tampilLayanan();
     hitungTotal();
     tampilPesanan();
+
   </script>
+
 </body>
 </html>
